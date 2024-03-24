@@ -14,12 +14,23 @@ public class Venue {
     this.hireFee = hireFee;
   }
 
+  // Getter method for venueName
   public String getVenueName() {
     return venueName;
   }
 
+  // Getter method for venueCode
   public String getVenueCode() {
     return venueCode;
   }
+
+  // Getter method for venueCapacity
+  public int getVenueCapacity() {
+    return venueCapacity;
+  }
  
+  // Getter method for hireFee
+  public int getHireFee() {
+    return hireFee;
+  }
 }

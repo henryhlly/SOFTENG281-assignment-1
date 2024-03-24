@@ -12,12 +12,24 @@ public class VenueHireSystem {
 
   public void printVenues() {
     int quantity = venues.size();
+    String[] numStrings = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 
+    // Print intital statement for all cases
     if (quantity==0) {
       MessageCli.NO_VENUES.printMessage();
     }
-    else if (quantity==1) {
+    if (quantity==1) {
       MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
+    }
+    else if (quantity < 10) {
+      MessageCli.NUMBER_VENUES.printMessage("are", numStrings[quantity], "s");
+    }
+    else {
+      MessageCli.NUMBER_VENUES.printMessage("are", String.valueOf(quantity), "s");
+    }
+  
+    for (Venue v:venues) {
+      MessageCli.VENUE_ENTRY.printMessage(v.getVenueName(), v.getVenueCode(), String.valueOf(v.getVenueCapacity()), String.valueOf(v.getHireFee()), "");
     }
   }
 
@@ -66,10 +78,11 @@ public class VenueHireSystem {
         valid = false;
       }
 
-      
+      // Create the new Venue
       if (valid == true) {
         Venue venue = new Venue(venueName, venueCode, venueCapacity, hireFee);
         venues.add(venue);
+        MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
       }
       
     }
