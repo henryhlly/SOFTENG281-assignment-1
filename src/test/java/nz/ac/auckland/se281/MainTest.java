@@ -16,7 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
   MainTest.Task1.class,
   // MainTest.Task2.class,
   // MainTest.Task3.class,
-  // MainTest.YourTests.class, // Uncomment this line to run your own tests
+  MainTest.YourTests.class, // Uncomment this line to run your own tests
 })
 public class MainTest {
 
@@ -136,6 +136,21 @@ public class MainTest {
     public static class YourTests extends CliTest {
       public YourTests() {
         super(Main.class);
+      }
+
+      @Test
+      public void T1_09_four_errors_in_a_row() throws Exception {
+        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "twenty", "250");
+        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "-1", "250");
+        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "fifty");
+        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "-1");
+        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "250");
+
+        assertContains("Venue not created: capacity must be a number.");
+        assertContains("Venue not created: capacity must be a positive number.");
+        assertContains("Venue not created: hire fee must be a number.");
+        assertContains("Venue not created: hire fee must be a positive number.");
+        assertContains("Successfully created venue 'Frugal Fiesta Hall' (FFH).");
       }
     }
   }

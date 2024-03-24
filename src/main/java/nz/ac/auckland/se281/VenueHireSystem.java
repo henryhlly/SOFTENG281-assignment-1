@@ -88,6 +88,7 @@ public class VenueHireSystem {
     }
   }
 
+  
   //// Checkpoint 2 ////
 
   public void setSystemDate(String dateInput) {
