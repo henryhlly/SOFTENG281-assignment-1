@@ -71,13 +71,10 @@ public class VenueHireSystem {
     }
   }
 
+  // New method for checking whether an input is a positive integer and returns boolean/displays appropriate error message if it is not
   public boolean checkPositiveInteger(String input, String var_name) {
     try {
-      // Test for an integer input
-      int inputInt = Integer.parseInt(input);
-
-      // Test for a positive input
-      if (inputInt <= 0) {
+      if (Integer.parseInt(input) <= 0) {
         MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage(var_name, " positive");
         return (false);
       }
