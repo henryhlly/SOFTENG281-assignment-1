@@ -6,13 +6,19 @@ import nz.ac.auckland.se281.Types.FloralType;
 import java.util.ArrayList;
 
 public class VenueHireSystem {
-  ArrayList<String> venue_names = new ArrayList<String>();
-  ArrayList<String> venue_codes = new ArrayList<String>();
+  ArrayList<Venue> venues = new ArrayList<Venue>();
 
   public VenueHireSystem() {}
 
   public void printVenues() {
-    System.out.println("There are no venues in the system. Please create a venue first.");
+    int quantity = venues.size();
+
+    if (quantity==0) {
+      MessageCli.NO_VENUES.printMessage();
+    }
+    else if (quantity==1) {
+      MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
+    }
   }
 
   public void createVenue(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
@@ -24,12 +30,16 @@ public class VenueHireSystem {
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
       valid = false;
     }
-    // Testing venueCode validity
-    else if (venue_codes.contains(venueCode)) {
-      MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(venueCode, venue_names.get(venue_codes.indexOf(venueCode)));
-      valid = false;
-    }
-    else { 
+    
+    else {
+      // Testing venueCode validity
+      for (Venue v: venues) {
+        if (venueCode==v.getVenueCode()) {
+          MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(venueCode, v.getVenueName());
+          valid = false;
+        }
+      }
+
       // Testing venueCapacity validity
       try {
         Integer.parseInt(capacityInput);
@@ -56,13 +66,14 @@ public class VenueHireSystem {
         valid = false;
       }
 
+      
       if (valid == true) {
         Venue venue = new Venue(venueName, venueCode, venueCapacity, hireFee);
-        venue_names.add(venueName);
-        venue_codes.add(venueCode);
+        venues.add(venue);
       }
+      
     }
-
+      
   }
 
   public void setSystemDate(String dateInput) {
