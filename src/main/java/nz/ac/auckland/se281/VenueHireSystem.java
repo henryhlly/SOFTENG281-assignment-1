@@ -37,8 +37,8 @@ public class VenueHireSystem {
   public void createVenue(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
 
     boolean valid = true;
-    int venueCapacity = 0;
-    int hireFee = 0;
+    int venueCapacity = 1;
+    int hireFee = 1;
 
     // Testing venueName validity
     if (venueName.trim().isEmpty()) {
@@ -65,6 +65,7 @@ public class VenueHireSystem {
         
         // Test for a positive input
         if (venueCapacity <= 0) {
+          System.out.println(venueCapacity);
           MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
           valid = false;
         }
