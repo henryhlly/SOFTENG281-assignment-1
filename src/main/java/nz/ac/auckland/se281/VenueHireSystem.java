@@ -37,8 +37,6 @@ public class VenueHireSystem {
   public void createVenue(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
 
     boolean valid = true;
-    int venueCapacity = 1;
-    int hireFee = 1;
 
     // Testing venueName validity
     if (venueName.trim().isEmpty()) {
@@ -47,7 +45,7 @@ public class VenueHireSystem {
     }
     
     //Testing venueCode validity
-    if (valid){
+    else {
       for (Venue v: venues) {
         if (venueCode.equals(v.getVenueCode())) {
           
@@ -58,47 +56,42 @@ public class VenueHireSystem {
     }
       
     // Testing venueCapacity validity
-    if (valid) {
-      try {
-        // Test for an integer input
-        Integer.parseInt(capacityInput);
+    if (valid) {valid = (checkPositiveInteger(capacityInput, "capacity"));}
+
+    //Testing hireFee validity
+    if (valid) {valid = (checkPositiveInteger(hireFeeInput, "hire fee"));}
         
-        // Test for a positive input
-        if (venueCapacity <= 0) {
-          System.out.println(venueCapacity);
-          MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
-          valid = false;
-        }
-      } catch(Exception e) {
-        MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", "");
-        valid = false;
-      }
-    }
-
-      //Testing hireFee validity
-    if (valid) {
-      try {
-        // Test for an integer input
-        Integer.parseInt(hireFeeInput);
-
-        // Test for a positive input
-        if (hireFee <= 0) {
-          MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", " positive");
-          valid = false;
-        }
-      } catch(Exception e) {
-        MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", "");
-        valid = false;
-      }
-    }
-
     // Create the new Venue
     if (valid == true) {
+      int venueCapacity = Integer.parseInt(capacityInput);
+      int hireFee = Integer.parseInt(hireFeeInput);
       Venue venue = new Venue(venueName, venueCode, venueCapacity, hireFee);
       venues.add(venue);
       MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
     }
   }
+
+  public boolean checkPositiveInteger(String input, String var_name) {
+    try {
+      // Test for an integer input
+      int inputInt = Integer.parseInt(input);
+
+      // Test for a positive input
+      if (inputInt <= 0) {
+        MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage(var_name, " positive");
+        return (false);
+      }
+      else {
+        return (true);
+      }
+
+    } catch(Exception e) {
+      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage(var_name, "");
+      return (false);
+    }
+  }
+
+  //// Checkpoint 2 ////
 
   public void setSystemDate(String dateInput) {
     // TODO implement this method
