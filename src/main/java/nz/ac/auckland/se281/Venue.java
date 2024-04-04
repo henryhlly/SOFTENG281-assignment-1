@@ -1,12 +1,17 @@
 package nz.ac.auckland.se281;
 
+import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Venue {
   private String venueName;
   private String venueCode;
   private int venueCapacity;
   private int hireFee;
+  ArrayList<String> bookedDates = new ArrayList<String>();
+  DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-  
   public Venue(String venueName, String venueCode, int venueCapacity, int hireFee) {
     this.venueName = venueName;
     this.venueCode = venueCode;
@@ -32,5 +37,31 @@ public class Venue {
   // Getter method for hireFee
   public int getHireFee() {
     return hireFee;
+  }
+
+  // Setter method for bookedDates
+  public void addBookedDate(String date) {
+    bookedDates.add(date);
+    System.out.println(bookedDates);
+  }
+
+  // Getter method for bookedDates
+  public String getNextAvailableTime(LocalDate systemDate) {
+    if (systemDate == null) {
+      return "";
+    }
+    else {
+      LocalDate availableDate = systemDate;
+      Collections.sort(bookedDates);
+
+      for (String date : bookedDates) {
+        LocalDate bookedDate = LocalDate.parse(date, dateformatter);
+        if (bookedDate.isEqual(availableDate)) {
+          availableDate = availableDate.plusDays(1);
+        }
+      }
+      return dateformatter.format(availableDate);
+    }
+    
   }
 }

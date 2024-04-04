@@ -3,11 +3,14 @@ package nz.ac.auckland.se281;
 import java.util.ArrayList;
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class VenueHireSystem {
   ArrayList<Venue> venues = new ArrayList<Venue>();
   ArrayList<Booking> bookings = new ArrayList<Booking>();
-  String systemDate = "";
+  LocalDate systemDate = null;
+  DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
   int numberOfAttendees;
 
   public VenueHireSystem() {}
@@ -31,17 +34,11 @@ public class VenueHireSystem {
 
     // Print itemised list of all existing venues
     for (Venue v : venues) {
-      MessageCli.VENUE_ENTRY.printMessage(
-          v.getVenueName(),
-          v.getVenueCode(),
-          String.valueOf(v.getVenueCapacity()),
-          String.valueOf(v.getHireFee()),
-          "");
+      MessageCli.VENUE_ENTRY.printMessage(v.getVenueName(), v.getVenueCode(), String.valueOf(v.getVenueCapacity()), String.valueOf(v.getHireFee()),v.getNextAvailableTime(systemDate));
     }
   }
 
-  public void createVenue(
-      String venueName, String venueCode, String capacityInput, String hireFeeInput) {
+  public void createVenue(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
 
     boolean valid = true;
 
@@ -102,15 +99,15 @@ public class VenueHireSystem {
   //// Checkpoint 2 ////
 
   public void setSystemDate(String dateInput) {
-    systemDate = dateInput;
+    systemDate = LocalDate.parse(dateInput, dateformatter);
     MessageCli.DATE_SET.printMessage(dateInput);
   }
 
   public void printSystemDate() {
-    if (systemDate.isEmpty()) {
+    if (systemDate == null) {
       MessageCli.CURRENT_DATE.printMessage("not set");
     } else {
-      MessageCli.CURRENT_DATE.printMessage(systemDate);
+      MessageCli.CURRENT_DATE.printMessage(dateformatter.format(systemDate));
     }
   }
 
@@ -121,7 +118,7 @@ public class VenueHireSystem {
     int venueIndex = -1;
 
     // Test for unset system date
-    if (systemDate.isEmpty()) {
+    if (systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
       valid = false;
     }
@@ -145,8 +142,8 @@ public class VenueHireSystem {
       }
 
       // Test for past booking date
-      else if (systemDate.compareTo(options[1]) > 0) {
-        MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], systemDate);
+      else if (systemDate.isBefore(LocalDate.parse(options[1], dateformatter))) {
+        MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateformatter.format(systemDate));
         valid = false;
       } else {
         // Test for existing bookings on the same date and same venue
@@ -175,9 +172,11 @@ public class VenueHireSystem {
       }
     }
 
+    // Create Booking
     if (valid) {
       Booking booking = new Booking(options[0], options[1], options[2], String.valueOf(numberOfAttendees));
       bookings.add(booking);
+      venues.get(venueIndex).addBookedDate(options[1]);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
           booking.getBookingReference(),
           venues.get(venueIndex).getVenueName(),
