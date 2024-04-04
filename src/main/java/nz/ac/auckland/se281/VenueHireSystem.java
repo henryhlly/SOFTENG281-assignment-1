@@ -115,6 +115,7 @@ public class VenueHireSystem {
   public void makeBooking(String[] options) {
     // 0 - venueCode, 1 - bookingDate, 2 - email address, 3 - number of attendees
     boolean valid = true;
+    String venueName = "";
 
     // Test for unset system date
     if (systemDate.isEmpty()) {
@@ -130,6 +131,7 @@ public class VenueHireSystem {
       for (Venue v : venues) {
         if (v.getVenueCode().equals(options[0])) {
           valid = true;
+          venueName = v.getVenueName();
           break;
         } else {
           valid = false;
@@ -150,7 +152,7 @@ public class VenueHireSystem {
       Booking booking = new Booking(options[0], options[1], options[2], options[3]);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
           booking.getBookingReference(),
-          booking.getVenueCode(),
+          venueName,
           booking.getBookingDate(),
           booking.getNumberOfAttendees());
     }
