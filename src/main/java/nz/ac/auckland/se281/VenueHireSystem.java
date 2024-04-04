@@ -6,7 +6,9 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   ArrayList<Venue> venues = new ArrayList<Venue>();
+  ArrayList<Booking> bookings = new ArrayList<Booking>();
   String systemDate = "";
+  int numberOfAttendees;
 
   public VenueHireSystem() {}
 
@@ -113,9 +115,10 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
-    // 0 - venueCode, 1 - bookingDate, 2 - email address, 3 - number of attendees
+    // options[0] - venueCode, options[1] - bookingDate, options[2] - email address, options[3] -
+    // number of attendees
     boolean valid = true;
-    String venueName = "";
+    int venueIndex = -1;
 
     // Test for unset system date
     if (systemDate.isEmpty()) {
@@ -131,7 +134,7 @@ public class VenueHireSystem {
       for (Venue v : venues) {
         if (v.getVenueCode().equals(options[0])) {
           valid = true;
-          venueName = v.getVenueName();
+          venueIndex = venues.indexOf(v);
           break;
         } else {
           valid = false;
@@ -142,17 +145,42 @@ public class VenueHireSystem {
       }
 
       // Test for past booking date
-      if (systemDate.compareTo(options[1]) > 0) {
+      else if (systemDate.compareTo(options[1]) > 0) {
         MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], systemDate);
         valid = false;
+      } else {
+        // Test for existing bookings on the same date and same venue
+        for (Booking b : bookings) {
+          if (b.getVenueCode().equals(options[0]) && b.getBookingDate().equals(options[1])) {
+            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venues.get(venueIndex).getVenueName(), options[1]);
+            valid = false;
+            break;
+          }
+        }
+      }
+    }
+
+    // Test for unideal number of attendees
+    if (valid) {
+      int venueCapacity = venues.get(venueIndex).getVenueCapacity();
+      numberOfAttendees = Integer.parseInt(options[3]);
+      if (numberOfAttendees < (0.25 * venueCapacity)) {
+        System.out.println((int) (0.25*venueCapacity));
+        numberOfAttendees = (int) (0.25 * venueCapacity);
+        MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], String.valueOf(numberOfAttendees), String.valueOf(venueCapacity));
+      }
+      else if (numberOfAttendees > venueCapacity) {
+        numberOfAttendees = venueCapacity;
+        MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], String.valueOf(numberOfAttendees), String.valueOf(venueCapacity));
       }
     }
 
     if (valid) {
-      Booking booking = new Booking(options[0], options[1], options[2], options[3]);
+      Booking booking = new Booking(options[0], options[1], options[2], String.valueOf(numberOfAttendees));
+      bookings.add(booking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
           booking.getBookingReference(),
-          venueName,
+          venues.get(venueIndex).getVenueName(),
           booking.getBookingDate(),
           booking.getNumberOfAttendees());
     }
