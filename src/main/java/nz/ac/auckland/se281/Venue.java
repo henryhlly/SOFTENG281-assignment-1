@@ -52,6 +52,7 @@ public class Venue {
     }
     else {
       LocalDate availableDate = systemDate;
+      
       Collections.sort(bookedDates);
 
       for (String date : bookedDates) {

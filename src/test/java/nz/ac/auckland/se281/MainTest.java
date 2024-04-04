@@ -132,27 +132,6 @@ public class MainTest {
       assertDoesNotContain("two venue", true);
       assertDoesNotContain("2 venue", true);
     }
-
-    public static class YourTests extends CliTest {
-      public YourTests() {
-        super(Main.class);
-      }
-
-      @Test
-      public void T1_09_four_errors_in_a_row() throws Exception {
-        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "twenty", "250");
-        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "-1", "250");
-        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "fifty");
-        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "-1");
-        runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "250");
-
-        assertContains("Venue not created: capacity must be a number.");
-        assertContains("Venue not created: capacity must be a positive number.");
-        assertContains("Venue not created: hire fee must be a number.");
-        assertContains("Venue not created: hire fee must be a positive number.");
-        assertContains("Successfully created venue 'Frugal Fiesta Hall' (FFH).");
-      }
-    }
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -727,6 +706,79 @@ public class MainTest {
     public void T4_01_add_your_own_tests_as_needed() throws Exception {
       runCommands(PRINT_VENUES);
       assertContains("There are no venues in the system. Please create a venue first.");
+    }
+
+    @Test
+    public void T1_02_four_errors_in_a_row() throws Exception {
+      runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "twenty", "250");
+      runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "-1", "250");
+      runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "fifty");
+      runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "-1");
+      runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "250");
+
+      assertContains("Venue not created: capacity must be a number.");
+      assertContains("Venue not created: capacity must be a positive number.");
+      assertContains("Venue not created: hire fee must be a number.");
+      assertContains("Venue not created: hire fee must be a positive number.");
+      assertContains("Successfully created venue 'Frugal Fiesta Hall' (FFH).");
+    }
+
+    @Test
+    public void T1_03_booking_next_available_with_2_venues() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES, //
+              SET_DATE,
+              "03/02/2024", //
+              MAKE_BOOKING,
+              options("FFH", "03/02/2024", "client001@email.com", "230"),
+              MAKE_BOOKING,
+              options("GGG", "03/02/2024", "client001@email.com", "230"),
+              PRINT_VENUES));
+
+      assertContains(
+          "Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on"
+              + " 04/02/2024");
+      assertContains(
+          "Grand Gala Gardens (GGG) - 260 people - $1500 base hire fee. Next available on"
+              + " 04/02/2024");
+    }
+
+    @Test
+    public void T1_04_booking_next_available_with_booking_2_days_ahead() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES, //
+              SET_DATE,
+              "03/02/2024", //
+              MAKE_BOOKING,
+              options("FFH", "03/02/2024", "client001@email.com", "230"),
+              MAKE_BOOKING,
+              options("FFH", "05/02/2024", "client001@email.com", "230"),
+              PRINT_VENUES));
+
+      assertContains(
+          "Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on"
+              + " 04/02/2024");
+    }
+    @Test
+    public void T1_05_booking_next_available_with_booking_2_days_ahead_wrong_order() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES, //
+              SET_DATE,
+              "03/02/2024", //
+              MAKE_BOOKING,
+              options("FFH", "06/02/2024", "client001@email.com", "230"),
+              MAKE_BOOKING,
+              options("FFH", "03/02/2024", "client001@email.com", "230"),
+              MAKE_BOOKING,
+              options("FFH", "04/02/2024", "client001@email.com", "230"),
+              PRINT_VENUES));
+
+      assertContains(
+          "Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on"
+              + " 05/02/2024");
     }
   }
 
