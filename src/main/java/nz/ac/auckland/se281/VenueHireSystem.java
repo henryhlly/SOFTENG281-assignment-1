@@ -113,7 +113,47 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
-    // TODO implement this method
+    // 0 - venueCode, 1 - bookingDate, 2 - email address, 3 - number of attendees
+    boolean valid = true;
+
+    // Test for unset system date
+    if (systemDate.isEmpty()) {
+      MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+      valid = false;
+    }
+    // Test for empty venues list
+    else if (venues.size() == 0) {
+      MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+      valid = false;
+    } else {
+      // Test for invalid venue code
+      for (Venue v : venues) {
+        if (v.getVenueCode().equals(options[0])) {
+          valid = true;
+          break;
+        } else {
+          valid = false;
+        }
+      }
+      if (!valid) {
+        MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
+      }
+
+      // Test for past booking date
+      if (systemDate.compareTo(options[1]) > 0) {
+        MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], systemDate);
+        valid = false;
+      }
+    }
+
+    if (valid) {
+      Booking booking = new Booking(options[0], options[1], options[2], options[3]);
+      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
+          booking.getBookingReference(),
+          booking.getVenueCode(),
+          booking.getBookingDate(),
+          booking.getNumberOfAttendees());
+    }
   }
 
   public void printBookings(String venueCode) {
