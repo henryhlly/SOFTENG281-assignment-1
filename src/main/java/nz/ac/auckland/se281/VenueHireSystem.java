@@ -112,8 +112,7 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
-    // options[0] - venueCode, options[1] - bookingDate, options[2] - email address, options[3] -
-    // number of attendees
+    // options[0] - venueCode, options[1] - bookingDate, options[2] - email address, options[3] - number of attendees
     boolean valid = true;
     int venueIndex = -1;
 
@@ -186,7 +185,32 @@ public class VenueHireSystem {
   }
 
   public void printBookings(String venueCode) {
-    // TODO implement this method
+    boolean valid = false;
+    boolean no_bookings = true;
+    int venueIndex = -1;
+
+    for (Venue v : venues) {
+      if (v.getVenueCode().equals(venueCode)) {
+        valid = true;
+        venueIndex = venues.indexOf(v);
+        break;
+      }
+    }
+    if (!valid) {
+      MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
+    } 
+    else {
+      MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venues.get(venueIndex).getVenueName());
+      for (Booking b : bookings) {
+        if (b.getVenueCode().equals(venueCode)) {
+          MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(b.getBookingReference(), b.getBookingDate(), b.getEmailAddress(), b.getNumberOfAttendees());
+          no_bookings = false;
+        }
+      }
+      if (no_bookings) {
+        MessageCli.PRINT_BOOKINGS_NONE.printMessage(venues.get(venueIndex).getVenueName());
+      }
+    }
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
