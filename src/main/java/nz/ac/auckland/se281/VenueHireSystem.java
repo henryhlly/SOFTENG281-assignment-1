@@ -142,7 +142,7 @@ public class VenueHireSystem {
       }
 
       // Test for past booking date
-      else if (systemDate.isBefore(LocalDate.parse(options[1], dateformatter))) {
+      else if (systemDate.isAfter(LocalDate.parse(options[1], dateformatter))) {
         MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateformatter.format(systemDate));
         valid = false;
       } else {
