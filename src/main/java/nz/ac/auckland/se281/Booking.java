@@ -7,10 +7,10 @@ public class Booking {
   private String venueCode;
   private String bookingDate;
   private String emailAddress;
-  private String numberOfAttendees;
+  private int numberOfAttendees;
   private ArrayList<Service> services = new ArrayList<Service>();
 
-  public Booking(String venueCode, String bookingDate, String emailAddress, String numberOfAttendees) {
+  public Booking(String venueCode, String bookingDate, String emailAddress, int numberOfAttendees) {
     this.venueCode = venueCode;
     this.bookingDate = bookingDate;
     this.emailAddress = emailAddress;
@@ -34,7 +34,7 @@ public class Booking {
     return emailAddress;
   }
 
-  public String getNumberOfAttendees() {
+  public int getNumberOfAttendees() {
     return numberOfAttendees;
   }
 

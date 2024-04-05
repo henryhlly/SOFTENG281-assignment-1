@@ -99,6 +99,7 @@ public class VenueHireSystem {
   //// Checkpoint 2 ////
 
   public void setSystemDate(String dateInput) {
+    // Get the date out string using specified format
     systemDate = LocalDate.parse(dateInput, dateformatter);
     MessageCli.DATE_SET.printMessage(dateInput);
   }
@@ -173,14 +174,10 @@ public class VenueHireSystem {
 
     // Create Booking
     if (valid) {
-      Booking booking = new Booking(options[0], options[1], options[2], String.valueOf(numberOfAttendees));
+      Booking booking = new Booking(options[0], options[1], options[2], numberOfAttendees);
       bookings.add(booking);
       venues.get(venueIndex).addBookedDate(options[1]);
-      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
-          booking.getBookingReference(),
-          venues.get(venueIndex).getVenueName(),
-          booking.getBookingDate(),
-          booking.getNumberOfAttendees());
+      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(booking.getBookingReference(), venues.get(venueIndex).getVenueName(), booking.getBookingDate(), String.valueOf(booking.getNumberOfAttendees()));
     }
   }
 
@@ -189,6 +186,7 @@ public class VenueHireSystem {
     boolean no_bookings = true;
     int venueIndex = -1;
 
+    // Test for existing index
     for (Venue v : venues) {
       if (v.getVenueCode().equals(venueCode)) {
         valid = true;
@@ -200,10 +198,11 @@ public class VenueHireSystem {
       MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
     } 
     else {
+      // Print bookings accordingly
       MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venues.get(venueIndex).getVenueName());
       for (Booking b : bookings) {
         if (b.getVenueCode().equals(venueCode)) {
-          MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(b.getBookingReference(), b.getBookingDate(), b.getEmailAddress(), b.getNumberOfAttendees());
+          MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(b.getBookingReference(), b.getBookingDate(), b.getEmailAddress(), String.valueOf(b.getNumberOfAttendees()));
           no_bookings = false;
         }
       }
@@ -215,10 +214,12 @@ public class VenueHireSystem {
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
     boolean valid = false;
+    // Test for existing booking reference
     for (Booking b : bookings) {
       if (b.getBookingReference().equals(bookingReference)) {
         valid = true;
-        Service catering = new Catering();
+        // Create catering service
+        Service catering = new Catering(cateringType, b);
         b.addService(catering);
         MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Catering (" + cateringType.getName() + ")", bookingReference);
         break;
