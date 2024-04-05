@@ -231,7 +231,21 @@ public class VenueHireSystem {
   }
 
   public void addServiceMusic(String bookingReference) {
-    // TODO implement this method
+    boolean valid = false;
+    // Test for existing booking reference
+    for (Booking b : bookings) {
+      if (b.getBookingReference().equals(bookingReference)) {
+        valid = true;
+        // Create music service
+        Service music = new Music(b);
+        b.addService(music);
+        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Music", bookingReference);
+        break;
+      }
+    }
+    if (!valid) {
+      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Music", bookingReference);
+    }
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
