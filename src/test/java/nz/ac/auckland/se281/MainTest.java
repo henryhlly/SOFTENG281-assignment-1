@@ -15,8 +15,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
   MainTest.Task1.class,
   MainTest.Task2.class,
-  // MainTest.Task3.class,
-  MainTest.YourTests.class, // Uncomment this line to run your own tests
+  MainTest.Task3.class,
+  MainTest.YourTests.class,
 })
 public class MainTest {
 
