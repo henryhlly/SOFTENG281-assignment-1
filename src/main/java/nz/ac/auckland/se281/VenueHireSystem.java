@@ -249,7 +249,21 @@ public class VenueHireSystem {
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
-    // TODO implement this method
+    boolean valid = false;
+    // Test for existing booking reference
+    for (Booking b : bookings) {
+      if (b.getBookingReference().equals(bookingReference)) {
+        valid = true;
+        // Create floral service
+        Service floral = new Floral(floralType, b);
+        b.addService(floral);
+        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Floral (" + floralType.getName() + ")", bookingReference);
+        break;
+      }
+    }
+    if (!valid) {
+      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Floral", bookingReference);
+    }
   }
 
   public void viewInvoice(String bookingReference) {
