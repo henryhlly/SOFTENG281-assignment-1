@@ -115,7 +115,7 @@ public class VenueHireSystem {
   public void makeBooking(String[] options) {
     // options[0] - venueCode, options[1] - bookingDate, options[2] - email address, options[3] - number of attendees
     boolean valid = true;
-    int venueIndex = -1;
+    Venue venue = null;
 
     // Test for unset system date
     if (systemDate == null) {
@@ -131,7 +131,7 @@ public class VenueHireSystem {
       for (Venue v : venues) {
         if (v.getVenueCode().equals(options[0])) {
           valid = true;
-          venueIndex = venues.indexOf(v);
+          venue = v;
           break;
         } else {
           valid = false;
@@ -148,8 +148,8 @@ public class VenueHireSystem {
       } else {
         // Test for existing bookings on the same date and same venue
         for (Booking b : bookings) {
-          if (b.getVenueCode().equals(options[0]) && b.getBookingDate().equals(options[1])) {
-            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venues.get(venueIndex).getVenueName(), options[1]);
+          if ((b.getVenue()).getVenueCode().equals(options[0]) && b.getBookingDate().equals(options[1])) {
+            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venue.getVenueName(), options[1]);
             valid = false;
             break;
           }
@@ -159,7 +159,7 @@ public class VenueHireSystem {
 
     // Test for unideal number of attendees
     if (valid) {
-      int venueCapacity = venues.get(venueIndex).getVenueCapacity();
+      int venueCapacity = venue.getVenueCapacity();
       numberOfAttendees = Integer.parseInt(options[3]);
       if (numberOfAttendees < (0.25 * venueCapacity)) {
         System.out.println((int) (0.25*venueCapacity));
@@ -174,10 +174,10 @@ public class VenueHireSystem {
 
     // Create Booking
     if (valid) {
-      Booking booking = new Booking(options[0], options[1], options[2], numberOfAttendees);
+      Booking booking = new Booking(venue, options[1], options[2], numberOfAttendees);
       bookings.add(booking);
-      venues.get(venueIndex).addBookedDate(options[1]);
-      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(booking.getBookingReference(), venues.get(venueIndex).getVenueName(), booking.getBookingDate(), String.valueOf(booking.getNumberOfAttendees()));
+      venue.addBookedDate(options[1]);
+      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(booking.getBookingReference(), venue.getVenueName(), booking.getBookingDate(), String.valueOf(booking.getNumberOfAttendees()));
     }
   }
 
@@ -201,7 +201,7 @@ public class VenueHireSystem {
       // Print bookings accordingly
       MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venues.get(venueIndex).getVenueName());
       for (Booking b : bookings) {
-        if (b.getVenueCode().equals(venueCode)) {
+        if (b.getVenue().getVenueCode().equals(venueCode)) {
           MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(b.getBookingReference(), b.getBookingDate(), b.getEmailAddress(), String.valueOf(b.getNumberOfAttendees()));
           no_bookings = false;
         }
@@ -267,6 +267,25 @@ public class VenueHireSystem {
   }
 
   public void viewInvoice(String bookingReference) {
-    // TODO implement this method
+    boolean valid = false;
+    Booking booking = null;
+
+    // Test for existing booking reference
+    for (Booking b : bookings) {
+      if (b.getBookingReference().equals(bookingReference)) {
+        booking = b;
+        valid = true;
+        break;
+      }
+    }
+    if (!valid) {
+      MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
+    }
+    else {
+
+      // Print the Invoice
+      // Header - (Booking Reference, Email Address, Date of Booking, Date of Party, Number of Guests, Name of Venue)
+      MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(bookingReference, booking.getEmailAddress(), dateformatter.format(systemDate), booking.getBookingDate(), String.valueOf(booking.getNumberOfAttendees()), booking.getVenue().getVenueName());
+    }
   }
 }
