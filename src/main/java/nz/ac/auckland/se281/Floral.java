@@ -16,7 +16,7 @@ public class Floral extends Service{
   }
 
   public int getTotalCost() {
-    totalCost = (floralType.getCost() * booking.getNumberOfAttendees());
+    totalCost = floralType.getCost();
     return totalCost;
   }
 }

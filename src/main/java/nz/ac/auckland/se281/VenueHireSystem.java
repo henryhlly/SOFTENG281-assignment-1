@@ -301,12 +301,13 @@ public class VenueHireSystem {
         MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getCateringType(), String.valueOf(catering.getTotalCost()));
         totalPrice = totalPrice + catering.getTotalCost();
       }
+
       if (music != null) {
-        MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(String.valueOf(music.getTotalCost()));
+        MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(String.valueOf(music.getTotalCost()));
         totalPrice = totalPrice + music.getTotalCost();
       }
       if (floral != null) {
-        MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(floral.getFloralType(), String.valueOf(floral.getTotalCost()));
+        MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(floral.getFloralType(), String.valueOf(floral.getTotalCost()));
         totalPrice = totalPrice + floral.getTotalCost();
       }
 
