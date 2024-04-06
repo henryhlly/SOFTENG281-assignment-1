@@ -7,6 +7,11 @@ public class Catering extends Service {
   
   public Catering(CateringType cateringType, Booking booking) {
     super(cateringType.getCostPerPerson(), booking);
+    this.cateringType = cateringType;
+  }
+
+  public String getCateringType() {
+    return cateringType.getName();
   }
 
   public int getTotalCost() {

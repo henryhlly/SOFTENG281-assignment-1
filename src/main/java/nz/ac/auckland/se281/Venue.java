@@ -42,7 +42,6 @@ public class Venue {
   // Setter method for bookedDates
   public void addBookedDate(String date) {
     bookedDates.add(date);
-    System.out.println(bookedDates);
   }
 
   // Getter method for bookedDates

@@ -1,14 +1,15 @@
 package nz.ac.auckland.se281;
 
-import java.util.ArrayList;
-
 public class Booking {
   private String bookingReference;
   private Venue venue;
   private String bookingDate;
   private String emailAddress;
   private int numberOfAttendees;
-  private ArrayList<Service> services = new ArrayList<Service>();
+
+  public Catering catering;
+  public Music music;
+  public Floral floral;
 
   public Booking(Venue venue, String bookingDate, String emailAddress, int numberOfAttendees) {
     this.venue = venue;
@@ -38,7 +39,28 @@ public class Booking {
     return numberOfAttendees;
   }
 
-  public void addService(Service serviceObject) {
-    services.add(serviceObject);
+
+  public void addCatering(Catering catering) {
+    this.catering = catering;
+  }
+
+  public void addMusic(Music music) {
+    this.music = music;
+  }
+
+  public void addFloral(Floral floral) {
+    this.floral = floral;
+  }
+
+  public Catering getCatering() {
+    return catering;
+  }
+
+  public Music getMusic() {
+    return music;
+  }
+
+  public Floral getFloral() {
+    return floral;
   }
 }

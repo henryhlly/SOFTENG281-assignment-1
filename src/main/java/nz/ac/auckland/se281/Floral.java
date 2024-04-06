@@ -8,6 +8,11 @@ public class Floral extends Service{
 
   public Floral(FloralType floralType, Booking booking) {
     super(floralType.getCost(), booking);
+    this.floralType = floralType;
+  }
+
+  public String getFloralType() {
+    return floralType.getName();
   }
 
   public int getTotalCost() {
