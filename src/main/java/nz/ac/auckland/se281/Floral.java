@@ -11,6 +11,7 @@ public class Floral extends Service{
     this.floralType = floralType;
   }
 
+  // Getter method for floralType
   public String getFloralType() {
     return floralType.getName();
   }

@@ -11,7 +11,6 @@ public class VenueHireSystem {
   ArrayList<Booking> bookings = new ArrayList<Booking>();
   LocalDate systemDate = null;
   DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-  int numberOfAttendees;
 
   public VenueHireSystem() {}
 
@@ -105,6 +104,7 @@ public class VenueHireSystem {
   }
 
   public void printSystemDate() {
+    // Test is systemDate is set
     if (systemDate == null) {
       MessageCli.CURRENT_DATE.printMessage("not set");
     } else {
@@ -116,6 +116,7 @@ public class VenueHireSystem {
     // options[0] - venueCode, options[1] - bookingDate, options[2] - email address, options[3] - number of attendees
     boolean valid = true;
     Venue venue = null;
+    int numberOfAttendees = -1;
 
     // Test for unset system date
     if (systemDate == null) {
@@ -297,20 +298,23 @@ public class VenueHireSystem {
       MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(String.valueOf(booking.getVenue().getHireFee()));
       totalPrice = totalPrice + booking.getVenue().getHireFee();
       
+      // Check if catering exists
       if (catering != null) {
         MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getCateringType(), String.valueOf(catering.getTotalCost()));
         totalPrice = totalPrice + catering.getTotalCost();
       }
 
+      // Check is music service exists
       if (music != null) {
         MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(String.valueOf(music.getTotalCost()));
         totalPrice = totalPrice + music.getTotalCost();
       }
+
+      // Check if floral service exists
       if (floral != null) {
         MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(floral.getFloralType(), String.valueOf(floral.getTotalCost()));
         totalPrice = totalPrice + floral.getTotalCost();
       }
-
       MessageCli.INVOICE_CONTENT_BOTTOM_HALF.printMessage(String.valueOf(totalPrice));
     }
   }

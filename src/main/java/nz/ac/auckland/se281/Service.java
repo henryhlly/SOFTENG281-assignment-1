@@ -10,9 +10,11 @@ public abstract class Service {
     this.booking = booking;
   }
 
+  // Getter method for costPerPerson
   public int getCostPerPerson() {
     return costPerPerson;
   }
 
+  // Getter method for totalCost
   abstract int getTotalCost();
 }

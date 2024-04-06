@@ -709,7 +709,7 @@ public class MainTest {
     }
 
     @Test
-    public void T1_02_four_errors_in_a_row() throws Exception {
+    public void T4_02_four_errors_in_a_row() throws Exception {
       runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "twenty", "250");
       runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "-1", "250");
       runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "fifty");
@@ -724,7 +724,7 @@ public class MainTest {
     }
 
     @Test
-    public void T1_03_booking_next_available_with_2_venues() throws Exception {
+    public void T4_03_booking_next_available_with_2_venues() throws Exception {
       runCommands(
           unpack(
               CREATE_TEN_VENUES, //
@@ -745,7 +745,7 @@ public class MainTest {
     }
 
     @Test
-    public void T1_04_booking_next_available_with_booking_2_days_ahead() throws Exception {
+    public void T4_04_booking_next_available_with_booking_2_days_ahead() throws Exception {
       runCommands(
           unpack(
               CREATE_TEN_VENUES, //
@@ -762,7 +762,7 @@ public class MainTest {
               + " 04/02/2024");
     }
     @Test
-    public void T1_05_booking_next_available_with_booking_2_days_ahead_wrong_order() throws Exception {
+    public void T4_05_booking_next_available_with_booking_2_days_ahead_wrong_order() throws Exception {
       runCommands(
           unpack(
               CREATE_TEN_VENUES, //
@@ -779,6 +779,59 @@ public class MainTest {
       assertContains(
           "Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on"
               + " 05/02/2024");
+    }
+
+    @Test
+    public void T4_06_invoice_of_booking_with_2_services() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("FFH", "27/07/2024", "client001@email.com", "20"), //
+              ADD_CATERING,
+              "HUD14D8O",
+              options("BL"), //
+              ADD_MUSIC,
+              "HUD14D8O",
+              VIEW_INVOICE,
+              "HUD14D8O"));
+
+              assertContains("Successfully added Catering (Two Course Breakfast/Lunch) service to booking 'HUD14D8O'.");
+              assertContains("Successfully added Music service to booking 'HUD14D8O'.");
+              assertContains("* Catering (Two Course Breakfast/Lunch) - $900");
+              assertContains("* Music - $500");
+              assertDoesNotContain("not added", true);
+    }
+
+    @Test
+    public void T4_06_invoice_of_booking_with_3_services() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("FFH", "27/07/2024", "client001@email.com", "20"), //
+              ADD_CATERING,
+              "HUD14D8O",
+              options("BL"), //
+              ADD_MUSIC,
+              "HUD14D8O",
+              ADD_FLORAL,
+              "HUD14D8O",
+              options("y"), //
+              VIEW_INVOICE,
+              "HUD14D8O"));
+
+              assertContains("Successfully added Catering (Two Course Breakfast/Lunch) service to booking 'HUD14D8O'.");
+              assertContains("Successfully added Music service to booking 'HUD14D8O'.");
+              assertContains("Successfully added Floral (Deluxe) service to booking 'HUD14D8O'.");
+              assertContains("* Catering (Two Course Breakfast/Lunch) - $900");
+              assertContains("* Music - $500");
+              assertContains("* Floral (Deluxe) - $1000");
+              assertDoesNotContain("not added", true);
     }
   }
 

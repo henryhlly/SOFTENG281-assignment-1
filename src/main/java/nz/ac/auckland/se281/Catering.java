@@ -10,6 +10,7 @@ public class Catering extends Service {
     this.cateringType = cateringType;
   }
 
+  // Getter method for cateringType
   public String getCateringType() {
     return cateringType.getName();
   }
