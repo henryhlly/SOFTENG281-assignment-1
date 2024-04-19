@@ -3,7 +3,7 @@ package nz.ac.auckland.se281;
 import nz.ac.auckland.se281.Types.CateringType;
 
 public class Catering extends Service {
-  CateringType cateringType;
+  private CateringType cateringType;
 
   public Catering(CateringType cateringType, Booking booking) {
     super(cateringType.getCostPerPerson(), booking);

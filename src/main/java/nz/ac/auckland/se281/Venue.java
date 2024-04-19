@@ -11,7 +11,7 @@ public class Venue {
   private int venueCapacity;
   private int hireFee;
   private ArrayList<String> bookedDates = new ArrayList<String>();
-  DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+  private DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   public Venue(String venueName, String venueCode, int venueCapacity, int hireFee) {
     this.venueName = venueName;
@@ -47,13 +47,16 @@ public class Venue {
 
   // Getter method for bookedDates
   public String getNextAvailableTime(LocalDate systemDate) {
+    // If the system date is null, return "N/A"
     if (systemDate == null) {
       return "N/A";
     } else {
       LocalDate availableDate = systemDate;
 
+      // Rearrange the dates in chronological order
       Collections.sort(bookedDates);
 
+      // Calculate the next available date
       for (String date : bookedDates) {
         LocalDate bookedDate = LocalDate.parse(date, dateformatter);
         if (bookedDate.isEqual(availableDate)) {

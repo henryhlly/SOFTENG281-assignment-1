@@ -7,9 +7,9 @@ public class Booking {
   private String emailAddress;
   private int numberOfAttendees;
 
-  public Catering catering;
-  public Music music;
-  public Floral floral;
+  private Catering catering;
+  private Music music;
+  private Floral floral;
 
   public Booking(Venue venue, String bookingDate, String emailAddress, int numberOfAttendees) {
     this.venue = venue;

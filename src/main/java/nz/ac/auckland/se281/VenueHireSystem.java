@@ -7,10 +7,10 @@ import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
-  ArrayList<Venue> venues = new ArrayList<Venue>();
+  private ArrayList<Venue> venues = new ArrayList<Venue>();
   private ArrayList<Booking> bookings = new ArrayList<Booking>();
   private LocalDate systemDate = null;
-  DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+  private DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   public VenueHireSystem() {}
 
@@ -86,17 +86,19 @@ public class VenueHireSystem {
 
   // New method for checking whether an input is a positive integer and returns boolean/displays
   // appropriate error message if it is not
-  public boolean checkPositiveInteger(String input, String var_name) {
+  public boolean checkPositiveInteger(String input, String varName) {
     try {
+      // Run the integer parse and check if it is positive
       if (Integer.parseInt(input) <= 0) {
-        MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage(var_name, " positive");
+        MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage(varName, " positive");
         return (false);
       } else {
         return (true);
       }
 
     } catch (Exception e) {
-      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage(var_name, "");
+      // If input is not a positive integer
+      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage(varName, "");
       return (false);
     }
   }
@@ -198,7 +200,7 @@ public class VenueHireSystem {
 
   public void printBookings(String venueCode) {
     boolean valid = false;
-    boolean no_bookings = true;
+    boolean noBookings = true;
     int venueIndex = -1;
 
     // Test for existing index
@@ -221,10 +223,10 @@ public class VenueHireSystem {
               b.getBookingDate(),
               b.getEmailAddress(),
               String.valueOf(b.getNumberOfAttendees()));
-          no_bookings = false;
+          noBookings = false;
         }
       }
-      if (no_bookings) {
+      if (noBookings) {
         MessageCli.PRINT_BOOKINGS_NONE.printMessage(venues.get(venueIndex).getVenueName());
       }
     }
