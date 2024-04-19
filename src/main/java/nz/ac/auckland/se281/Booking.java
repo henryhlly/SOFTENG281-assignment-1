@@ -54,12 +54,15 @@ public class Booking {
 
   public void addMusic(Music music) {
     if (this.catering != null) {
-      System.out.println("The old music service has been replaced with the new one.");
+      System.out.println("There already exists a music service.");
     }
     this.music = music;
   }
 
   public void addFloral(Floral floral) {
+    if (this.catering != null) {
+      System.out.println("The old floral service has been replaced with the new one.");
+    }
     this.floral = floral;
   }
 

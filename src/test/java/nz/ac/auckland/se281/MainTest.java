@@ -850,6 +850,34 @@ public class MainTest {
           "* Majestic Monarch Mansion (MMM) - 1000 people - $2500 base hire fee. Next available on"
               + " N/A");
     }
+
+    @Test
+    public void T4_09_duplicate_catering_services() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("FFH", "27/07/2024", "client001@email.com", "20"), //
+              ADD_CATERING,
+              "HUD14D8O",
+              options("BL"), //
+              ADD_CATERING,
+              "HUD14D8O",
+              options("BLD"), //
+              VIEW_INVOICE,
+              "HUD14D8O"));
+
+      assertContains(
+          "Successfully added Catering (Two Course Breakfast/Lunch) service to booking"
+              + " 'HUD14D8O'.");
+              assertContains(
+                "Successfully added Catering (Three Course) service to booking"
+                    + " 'HUD14D8O'.");
+      assertContains("* Catering (Three Course) - $1500");
+      assertDoesNotContain("not added", true);
+    }
   }
 
   private static final Object[] CREATE_NINE_VENUES =
