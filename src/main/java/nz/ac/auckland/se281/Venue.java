@@ -47,7 +47,7 @@ public class Venue {
   // Getter method for bookedDates
   public String getNextAvailableTime(LocalDate systemDate) {
     if (systemDate == null) {
-      return "";
+      return "N/A";
     }
     else {
       LocalDate availableDate = systemDate;

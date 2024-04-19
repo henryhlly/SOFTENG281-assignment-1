@@ -806,7 +806,7 @@ public class MainTest {
     }
 
     @Test
-    public void T4_06_invoice_of_booking_with_3_services() throws Exception {
+    public void T4_07_invoice_of_booking_with_3_services() throws Exception {
       runCommands(
           unpack(
               CREATE_TEN_VENUES,
