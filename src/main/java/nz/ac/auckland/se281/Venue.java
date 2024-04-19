@@ -10,7 +10,7 @@ public class Venue {
   private String venueCode;
   private int venueCapacity;
   private int hireFee;
-  ArrayList<String> bookedDates = new ArrayList<String>();
+  private ArrayList<String> bookedDates = new ArrayList<String>();
   DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   public Venue(String venueName, String venueCode, int venueCapacity, int hireFee) {

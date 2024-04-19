@@ -8,8 +8,8 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   ArrayList<Venue> venues = new ArrayList<Venue>();
-  ArrayList<Booking> bookings = new ArrayList<Booking>();
-  LocalDate systemDate = null;
+  private ArrayList<Booking> bookings = new ArrayList<Booking>();
+  private LocalDate systemDate = null;
   DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   public VenueHireSystem() {}

@@ -839,6 +839,17 @@ public class MainTest {
       assertContains("* Floral (Deluxe) - $1000");
       assertDoesNotContain("not added", true);
     }
+
+    @Test
+    public void T4_08_print_venues_with_no_system_date() throws Exception {
+      runCommands(unpack(CREATE_TEN_VENUES, PRINT_VENUES));
+
+      assertContains(
+          "* Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on N/A");
+      assertContains(
+          "* Majestic Monarch Mansion (MMM) - 1000 people - $2500 base hire fee. Next available on"
+              + " N/A");
+    }
   }
 
   private static final Object[] CREATE_NINE_VENUES =

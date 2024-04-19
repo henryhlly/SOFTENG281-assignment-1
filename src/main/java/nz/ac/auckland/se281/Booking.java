@@ -46,10 +46,16 @@ public class Booking {
 
   // Method to add services, if service already exists replace it with the new one.
   public void addCatering(Catering catering) {
+    if (this.catering != null) {
+      System.out.println("The old catering service has been replaced with the new one.");
+    }
     this.catering = catering;
   }
 
   public void addMusic(Music music) {
+    if (this.catering != null) {
+      System.out.println("The old music service has been replaced with the new one.");
+    }
     this.music = music;
   }
 
