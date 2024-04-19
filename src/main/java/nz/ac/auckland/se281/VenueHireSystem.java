@@ -1,10 +1,10 @@
 package nz.ac.auckland.se281;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class VenueHireSystem {
   ArrayList<Venue> venues = new ArrayList<Venue>();
@@ -33,11 +33,17 @@ public class VenueHireSystem {
 
     // Print itemised list of all existing venues
     for (Venue v : venues) {
-      MessageCli.VENUE_ENTRY.printMessage(v.getVenueName(), v.getVenueCode(), String.valueOf(v.getVenueCapacity()), String.valueOf(v.getHireFee()),v.getNextAvailableTime(systemDate));
+      MessageCli.VENUE_ENTRY.printMessage(
+          v.getVenueName(),
+          v.getVenueCode(),
+          String.valueOf(v.getVenueCapacity()),
+          String.valueOf(v.getHireFee()),
+          v.getNextAvailableTime(systemDate));
     }
   }
 
-  public void createVenue(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
+  public void createVenue(
+      String venueName, String venueCode, String capacityInput, String hireFeeInput) {
 
     boolean valid = true;
 
@@ -113,7 +119,8 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
-    // options[0] - venueCode, options[1] - bookingDate, options[2] - email address, options[3] - number of attendees
+    // options[0] - venueCode, options[1] - bookingDate, options[2] - email address, options[3] -
+    // number of attendees
     boolean valid = true;
     Venue venue = null;
     int numberOfAttendees = -1;
@@ -144,13 +151,16 @@ public class VenueHireSystem {
 
       // Test for past booking date
       else if (systemDate.isAfter(LocalDate.parse(options[1], dateformatter))) {
-        MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateformatter.format(systemDate));
+        MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(
+            options[1], dateformatter.format(systemDate));
         valid = false;
       } else {
         // Test for existing bookings on the same date and same venue
         for (Booking b : bookings) {
-          if ((b.getVenue()).getVenueCode().equals(options[0]) && b.getBookingDate().equals(options[1])) {
-            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venue.getVenueName(), options[1]);
+          if ((b.getVenue()).getVenueCode().equals(options[0])
+              && b.getBookingDate().equals(options[1])) {
+            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(
+                venue.getVenueName(), options[1]);
             valid = false;
             break;
           }
@@ -164,11 +174,12 @@ public class VenueHireSystem {
       numberOfAttendees = Integer.parseInt(options[3]);
       if (numberOfAttendees < (0.25 * venueCapacity)) {
         numberOfAttendees = (int) (0.25 * venueCapacity);
-        MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], String.valueOf(numberOfAttendees), String.valueOf(venueCapacity));
-      }
-      else if (numberOfAttendees > venueCapacity) {
+        MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+            options[3], String.valueOf(numberOfAttendees), String.valueOf(venueCapacity));
+      } else if (numberOfAttendees > venueCapacity) {
         numberOfAttendees = venueCapacity;
-        MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], String.valueOf(numberOfAttendees), String.valueOf(venueCapacity));
+        MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+            options[3], String.valueOf(numberOfAttendees), String.valueOf(venueCapacity));
       }
     }
 
@@ -177,7 +188,11 @@ public class VenueHireSystem {
       Booking booking = new Booking(venue, options[1], options[2], numberOfAttendees);
       bookings.add(booking);
       venue.addBookedDate(options[1]);
-      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(booking.getBookingReference(), venue.getVenueName(), booking.getBookingDate(), String.valueOf(booking.getNumberOfAttendees()));
+      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
+          booking.getBookingReference(),
+          venue.getVenueName(),
+          booking.getBookingDate(),
+          String.valueOf(booking.getNumberOfAttendees()));
     }
   }
 
@@ -196,13 +211,16 @@ public class VenueHireSystem {
     }
     if (!valid) {
       MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
-    } 
-    else {
+    } else {
       // Print bookings accordingly
       MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venues.get(venueIndex).getVenueName());
       for (Booking b : bookings) {
         if (b.getVenue().getVenueCode().equals(venueCode)) {
-          MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(b.getBookingReference(), b.getBookingDate(), b.getEmailAddress(), String.valueOf(b.getNumberOfAttendees()));
+          MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(
+              b.getBookingReference(),
+              b.getBookingDate(),
+              b.getEmailAddress(),
+              String.valueOf(b.getNumberOfAttendees()));
           no_bookings = false;
         }
       }
@@ -221,7 +239,8 @@ public class VenueHireSystem {
         // Create catering service
         Catering catering = new Catering(cateringType, b);
         b.addCatering(catering);
-        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Catering (" + cateringType.getName() + ")", bookingReference);
+        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage(
+            "Catering (" + cateringType.getName() + ")", bookingReference);
         break;
       }
     }
@@ -255,9 +274,10 @@ public class VenueHireSystem {
       if (b.getBookingReference().equals(bookingReference)) {
         valid = true;
         // Create floral service
-        Floral floral = new Floral(floralType, b);
+        Flowers floral = new Flowers(floralType, b);
         b.addFloral(floral);
-        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Floral (" + floralType.getName() + ")", bookingReference);
+        MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage(
+            "Floral (" + floralType.getName() + ")", bookingReference);
         break;
       }
     }
@@ -272,7 +292,7 @@ public class VenueHireSystem {
 
     Catering catering = null;
     Music music = null;
-    Floral floral = null;
+    Flowers floral = null;
 
     int totalPrice = 0;
 
@@ -289,18 +309,26 @@ public class VenueHireSystem {
     }
     if (!valid) {
       MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
-    }
-    else {
+    } else {
 
       // Print the Invoice
-      // Header - (Booking Reference, Email Address, Date of Booking, Date of Party, Number of Guests, Name of Venue)
-      MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(bookingReference, booking.getEmailAddress(), dateformatter.format(systemDate), booking.getBookingDate(), String.valueOf(booking.getNumberOfAttendees()), booking.getVenue().getVenueName());
-      MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(String.valueOf(booking.getVenue().getHireFee()));
+      // Header - (Booking Reference, Email Address, Date of Booking, Date of Party, Number of
+      // Guests, Name of Venue)
+      MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(
+          bookingReference,
+          booking.getEmailAddress(),
+          dateformatter.format(systemDate),
+          booking.getBookingDate(),
+          String.valueOf(booking.getNumberOfAttendees()),
+          booking.getVenue().getVenueName());
+      MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(
+          String.valueOf(booking.getVenue().getHireFee()));
       totalPrice = totalPrice + booking.getVenue().getHireFee();
-      
+
       // Check if catering exists
       if (catering != null) {
-        MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getCateringType(), String.valueOf(catering.getTotalCost()));
+        MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(
+            catering.getCateringType(), String.valueOf(catering.getTotalCost()));
         totalPrice = totalPrice + catering.getTotalCost();
       }
 
@@ -312,7 +340,8 @@ public class VenueHireSystem {
 
       // Check if floral service exists
       if (floral != null) {
-        MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(floral.getFloralType(), String.valueOf(floral.getTotalCost()));
+        MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(
+            floral.getFloralType(), String.valueOf(floral.getTotalCost()));
         totalPrice = totalPrice + floral.getTotalCost();
       }
       MessageCli.INVOICE_CONTENT_BOTTOM_HALF.printMessage(String.valueOf(totalPrice));

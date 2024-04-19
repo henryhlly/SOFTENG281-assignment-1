@@ -761,8 +761,10 @@ public class MainTest {
           "Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on"
               + " 04/02/2024");
     }
+
     @Test
-    public void T4_05_booking_next_available_with_booking_2_days_ahead_wrong_order() throws Exception {
+    public void T4_05_booking_next_available_with_booking_2_days_ahead_wrong_order()
+        throws Exception {
       runCommands(
           unpack(
               CREATE_TEN_VENUES, //
@@ -798,11 +800,13 @@ public class MainTest {
               VIEW_INVOICE,
               "HUD14D8O"));
 
-              assertContains("Successfully added Catering (Two Course Breakfast/Lunch) service to booking 'HUD14D8O'.");
-              assertContains("Successfully added Music service to booking 'HUD14D8O'.");
-              assertContains("* Catering (Two Course Breakfast/Lunch) - $900");
-              assertContains("* Music - $500");
-              assertDoesNotContain("not added", true);
+      assertContains(
+          "Successfully added Catering (Two Course Breakfast/Lunch) service to booking"
+              + " 'HUD14D8O'.");
+      assertContains("Successfully added Music service to booking 'HUD14D8O'.");
+      assertContains("* Catering (Two Course Breakfast/Lunch) - $900");
+      assertContains("* Music - $500");
+      assertDoesNotContain("not added", true);
     }
 
     @Test
@@ -825,13 +829,15 @@ public class MainTest {
               VIEW_INVOICE,
               "HUD14D8O"));
 
-              assertContains("Successfully added Catering (Two Course Breakfast/Lunch) service to booking 'HUD14D8O'.");
-              assertContains("Successfully added Music service to booking 'HUD14D8O'.");
-              assertContains("Successfully added Floral (Deluxe) service to booking 'HUD14D8O'.");
-              assertContains("* Catering (Two Course Breakfast/Lunch) - $900");
-              assertContains("* Music - $500");
-              assertContains("* Floral (Deluxe) - $1000");
-              assertDoesNotContain("not added", true);
+      assertContains(
+          "Successfully added Catering (Two Course Breakfast/Lunch) service to booking"
+              + " 'HUD14D8O'.");
+      assertContains("Successfully added Music service to booking 'HUD14D8O'.");
+      assertContains("Successfully added Floral (Deluxe) service to booking 'HUD14D8O'.");
+      assertContains("* Catering (Two Course Breakfast/Lunch) - $900");
+      assertContains("* Music - $500");
+      assertContains("* Floral (Deluxe) - $1000");
+      assertDoesNotContain("not added", true);
     }
   }
 

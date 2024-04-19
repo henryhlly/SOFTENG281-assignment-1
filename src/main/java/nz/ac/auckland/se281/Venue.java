@@ -1,8 +1,9 @@
 package nz.ac.auckland.se281;
 
-import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Venue {
   private String venueName;
@@ -33,7 +34,7 @@ public class Venue {
   public int getVenueCapacity() {
     return venueCapacity;
   }
- 
+
   // Getter method for hireFee
   public int getHireFee() {
     return hireFee;
@@ -48,10 +49,9 @@ public class Venue {
   public String getNextAvailableTime(LocalDate systemDate) {
     if (systemDate == null) {
       return "N/A";
-    }
-    else {
+    } else {
       LocalDate availableDate = systemDate;
-      
+
       Collections.sort(bookedDates);
 
       for (String date : bookedDates) {
@@ -62,6 +62,5 @@ public class Venue {
       }
       return dateformatter.format(availableDate);
     }
-    
   }
 }
