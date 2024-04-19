@@ -2,11 +2,11 @@ package nz.ac.auckland.se281;
 
 import nz.ac.auckland.se281.Types.FloralType;
 
-public class Flowers extends Service {
+public class Floral extends Service {
 
   FloralType floralType;
 
-  public Flowers(FloralType floralType, Booking booking) {
+  public Floral(FloralType floralType, Booking booking) {
     super(floralType.getCost(), booking);
     this.floralType = floralType;
   }

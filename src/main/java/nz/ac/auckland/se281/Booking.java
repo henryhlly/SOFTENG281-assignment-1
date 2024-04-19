@@ -9,7 +9,7 @@ public class Booking {
 
   public Catering catering;
   public Music music;
-  public Flowers floral;
+  public Floral floral;
 
   public Booking(Venue venue, String bookingDate, String emailAddress, int numberOfAttendees) {
     this.venue = venue;
@@ -59,7 +59,7 @@ public class Booking {
     this.music = music;
   }
 
-  public void addFloral(Flowers floral) {
+  public void addFloral(Floral floral) {
     this.floral = floral;
   }
 
@@ -72,7 +72,7 @@ public class Booking {
     return music;
   }
 
-  public Flowers getFloral() {
+  public Floral getFloral() {
     return floral;
   }
 }

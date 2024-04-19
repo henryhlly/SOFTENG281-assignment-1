@@ -274,7 +274,7 @@ public class VenueHireSystem {
       if (b.getBookingReference().equals(bookingReference)) {
         valid = true;
         // Create floral service
-        Flowers floral = new Flowers(floralType, b);
+        Floral floral = new Floral(floralType, b);
         b.addFloral(floral);
         MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage(
             "Floral (" + floralType.getName() + ")", bookingReference);
@@ -292,7 +292,7 @@ public class VenueHireSystem {
 
     Catering catering = null;
     Music music = null;
-    Flowers floral = null;
+    Floral floral = null;
 
     int totalPrice = 0;
 
